@@ -76,7 +76,7 @@ class TermFrequency(object):
 	    ax = sns.barplot(y="Terms", x="Count", palette=palette, data=data_frame, ax=ax)
 	    ax.set(xlabel='Term Frequency', ylabel='')
 
-	def run_term_freq_plot(self, word_count, N, title, figsize=(15, 10)):
+	def _run_term_freq_plot(self, word_count, N, title, figsize=(15, 10)):
 
 	    top_n, bottom_n = self._top_bottom_n_terms(word_count, N)
 
@@ -90,18 +90,18 @@ class TermFrequency(object):
 	    self._plot_term_freq(data_top, axes[1], "Reds")
 
 	def plot_term_freq_dist(self, N, per_label = False):
-		
+
 		if per_label:
 			for idx, label in enumerate(self.label_names):
 				word_count = self.X.getrow(idx).toarray().squeeze()
-				self.run_term_freq_plot(
+				self._run_term_freq_plot(
 					word_count,
 					N,
 					title = "Top N & Bottom N Term Frequency (Label {})".format(label),
 					figsize=(15, 5))
 		else:
 			word_count = self.X.sum(axis = 0).getA().squeeze()
-			self.run_term_freq_plot(
+			self._run_term_freq_plot(
 				word_count,
 				N,
 				title = "Top N & Bottom N Term Frequency (Overall)",
