@@ -2,36 +2,24 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
-from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 
-class TermFrequency(object):
+class TermCounter(object):
 	"""docstring for TermFrequency"""
 	def __init__(self,
-		label_names,
-		lowercase = True,
-		preprocessor = None,
-		tokenizer = None,
-		stop_words = None,
-		ngram_range = (1, 1),
-		analyzer = 'word',
-		max_df = 1.0,
-		min_df = 1,
-		max_features = None,
-		vocabulary = None):
+		label_names,		
+		lowercase,
+		preprocessor,
+		tokenizer,
+		stop_words,
+		ngram_range,
+		analyzer,
+		max_df,
+		min_df,
+		max_features,
+		vocabulary):
 
-		self.vectorizer = CountVectorizer(
-			lowercase = lowercase,
-			preprocessor = preprocessor,
-			tokenizer = tokenizer,
-			stop_words = stop_words,
-			ngram_range = ngram_range,
-			analyzer = analyzer,
-			max_df = max_df,
-			min_df = min_df,
-			max_features = max_features,
-			vocabulary = vocabulary)
-
-		self.min_df = min_df
+		self.min_count = min_df
 		self.label_names = label_names
 		
 	def vectorize_corpus(self, corpus):
@@ -45,7 +33,7 @@ class TermFrequency(object):
 	    counter = 0
 	    
 	    for idx in word_sorted:
-	        if count2idx[idx] >= self.min_df:
+	        if count2idx[idx] >= self.min_count:
 	            bottom_n.append(idx)
 	            bottom_n_frq.append(count2idx[idx])
 	            counter += 1
@@ -107,4 +95,93 @@ class TermFrequency(object):
 				title = "Top N & Bottom N Term Frequency (Overall)",
 				figsize=(15, 10))
 
+
+class TermFrequency(TermCounter):
+
+	def __init__(self,
+		label_names,
+		lowercase = True,
+		preprocessor = None,
+		tokenizer = None,
+		stop_words = None,
+		ngram_range = (1, 1),
+		analyzer = 'word',
+		max_df = 1.0,
+		min_df = 1,
+		max_features = None,
+		vocabulary = None):
+
+		super().__init__(
+			label_names,
+			lowercase,
+			preprocessor,
+			tokenizer,
+			stop_words,
+			ngram_range,
+			analyzer,
+			max_df,
+			min_df,
+			max_features,
+			vocabulary)
+
+		self.vectorizer = CountVectorizer(
+			lowercase = lowercase,
+			preprocessor = preprocessor,
+			tokenizer = tokenizer,
+			stop_words = stop_words,
+			ngram_range = ngram_range,
+			analyzer = analyzer,
+			max_df = max_df,
+			min_df = min_df,
+			max_features = max_features,
+			vocabulary = vocabulary)
+
+
+class TfIdf(TermCounter):
+
+	def __init__(self,
+		label_names,
+		norm='l2',
+		smooth_idf = True,
+		sublinear_tf = False,
+		lowercase = True,
+		preprocessor = None,
+		tokenizer = None,
+		stop_words = None,
+		ngram_range = (1, 1),
+		analyzer = 'word',
+		max_df = 1.0,
+		min_df = 1,
+		max_features = None,
+		vocabulary = None):
+
+		super().__init__(
+			label_names,
+			lowercase,
+			preprocessor,
+			tokenizer,
+			stop_words,
+			ngram_range,
+			analyzer,
+			max_df,
+			min_df,
+			max_features,
+			vocabulary)
+
+		self.vectorizer = TfidfVectorizer(
+			norm='l2',
+			smooth_idf = True,
+			sublinear_tf = False,
+			lowercase = lowercase,
+			preprocessor = preprocessor,
+			tokenizer = tokenizer,
+			stop_words = stop_words,
+			ngram_range = ngram_range,
+			analyzer = analyzer,
+			max_df = max_df,
+			min_df = min_df,
+			max_features = max_features,
+			vocabulary = vocabulary)
+
+		self.min_count = 0.0001
 

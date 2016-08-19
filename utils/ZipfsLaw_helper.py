@@ -78,3 +78,4 @@ class ZipfsLawHelper(object):
         c, alpha = self._powerLaw()
         print('According to Zipfs law %.2f should be close to 1.00' % alpha)
         self._plotPowerLaws([c,c], [-1,-alpha])
+
