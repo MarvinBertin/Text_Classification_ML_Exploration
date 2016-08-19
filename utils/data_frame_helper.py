@@ -2,14 +2,18 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+from sklearn.preprocessing import LabelEncoder
 
 class DataFrameHelper(object):
 	"""docstring for PlotHelper"""
 	def __init__(self, dataframe, label_names):
 		self.df = dataframe
+		self.raw_text = self.df.Text.get_values()
+		self.raw_labels = self.df.Labels.get_values()
+		self.y = LabelEncoder().fit_transform(self.raw_labels)
 		self.label_names = label_names
 		self.groupby_label_df = self.groupby_label()
-
+		
 
 	def _data_transform(self, data):
 	    return pd.Series({"Label_freq": data["Labels"].count(),

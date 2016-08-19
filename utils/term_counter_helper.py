@@ -62,7 +62,7 @@ class TermCounter(object):
 
 	def _plot_term_freq(self, data_frame, ax, palette):
 	    ax = sns.barplot(y="Terms", x="Count", palette=palette, data=data_frame, ax=ax)
-	    ax.set(xlabel='Term Frequency', ylabel='')
+	    ax.set(xlabel = self.counter_name, ylabel='')
 
 	def _run_term_freq_plot(self, word_count, N, title, figsize=(15, 10)):
 
@@ -85,14 +85,14 @@ class TermCounter(object):
 				self._run_term_freq_plot(
 					word_count,
 					N,
-					title = "Top N & Bottom N Term Frequency (Label {})".format(label),
+					title = "Top-N & Bottom-N {} (Label {})".format(self.counter_name, label),
 					figsize=(15, 5))
 		else:
 			word_count = self.X.sum(axis = 0).getA().squeeze()
 			self._run_term_freq_plot(
 				word_count,
 				N,
-				title = "Top N & Bottom N Term Frequency (Overall)",
+				title = "Top-N & Bottom-N {} (Overall)".format(self.counter_name),
 				figsize=(15, 10))
 
 
@@ -135,6 +135,8 @@ class TermFrequency(TermCounter):
 			min_df = min_df,
 			max_features = max_features,
 			vocabulary = vocabulary)
+
+		self.counter_name = "Term Frequency"
 
 
 class TfIdf(TermCounter):
@@ -183,5 +185,6 @@ class TfIdf(TermCounter):
 			max_features = max_features,
 			vocabulary = vocabulary)
 
+		self.counter_name = "Tf-Idf Weight"
 		self.min_count = 0.0001
 
