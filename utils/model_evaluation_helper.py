@@ -1,9 +1,13 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
 from sklearn.cross_validation import train_test_split
 from sklearn.grid_search import GridSearchCV
-from sklearn.metrics import classification_report
+from sklearn.metrics import classification_report, confusion_matrix
 from sklearn.linear_model import SGDClassifier
 from sklearn.feature_selection import SelectKBest, chi2
 from sklearn.naive_bayes import BernoulliNB, MultinomialNB
+
 
 
 class ModelEvaluationHelper(object):
@@ -46,3 +50,24 @@ class ModelEvaluationHelper(object):
 		y_pred = self.grid_search.predict(self.X_test)
 		print(classification_report(self.y_test, y_pred, target_names=self.label_names))
 		print()
+
+	def _plot_confusion_matrix(self, cm, cmap=plt.cm.Blues):
+	    plt.imshow(cm, interpolation='nearest', cmap=cmap)
+	    plt.title('Normalized confusion matrix')
+	    plt.colorbar()
+	    tick_marks = np.arange(len(self.label_names))
+	    plt.xticks(tick_marks, self.label_names, rotation=45)
+	    plt.yticks(tick_marks, self.label_names)
+	    plt.tight_layout()
+	    plt.ylabel('True label')
+	    plt.xlabel('Predicted label')
+
+	def confusion_matrix(self):
+		# Compute confusion matrix
+		y_pred = self.grid_search.predict(self.X_test)
+		cm = confusion_matrix(self.y_test, y_pred)
+		cm_normalized = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
+		np.set_printoptions(precision=2)
+
+		plt.figure(figsize=(8,8))
+		self._plot_confusion_matrix(cm_normalized)

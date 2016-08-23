@@ -16,7 +16,7 @@ class Classifier(object):
 			loss = "hinge"
 		elif model == "logisticRegression":
 			loss = "log"
-		elif model == "neuralNet":
+		elif model == "perceptron":
 			loss = "perceptron"
 		else:
 			loss = model #ie ‘modified_huber’, ‘squared_hinge’
