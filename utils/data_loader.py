@@ -13,7 +13,7 @@ class DataLoader(object):
         with open(fname) as f:
             content = f.readlines()
 
-        print("Number of Sentences: ", content[0])
+        print("Number of Rows: ", content[0])
         return content
 
     def _extract_data(self, line):

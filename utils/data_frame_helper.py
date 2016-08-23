@@ -13,6 +13,9 @@ class DataFrameHelper(object):
 		self.y = LabelEncoder().fit_transform(self.raw_labels)
 		self.label_names = label_names
 		self.groupby_label_df = self.groupby_label()
+
+		print("%d documents" % len(self.y))
+		print("%d categories" % len(label_names))
 		
 
 	def _data_transform(self, data):

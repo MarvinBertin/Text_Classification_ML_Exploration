@@ -26,6 +26,10 @@ class TermCounter(object):
 		self.X = self.vectorizer.fit_transform(corpus)
 		self.vocab = np.array(self.vectorizer.get_feature_names())
 
+		print("Feature Matrix:")
+		print("n_samples: %d \nn_features: %d" % self.X.shape)
+
+
 	def _bottom_n_filter(self, word_sorted, count2idx, n):
 	    
 	    bottom_n = []
