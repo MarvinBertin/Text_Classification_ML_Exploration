@@ -2,7 +2,7 @@ from sklearn.linear_model import SGDClassifier
 from sklearn.naive_bayes import BernoulliNB, MultinomialNB
 from sklearn.neighbors import KNeighborsClassifier, NearestCentroid
 from sklearn.svm import SVC
-from sklearn.ensemble import ExtraTreesClassifier, RandomForestClassifier, ExtraTreesClassifier
+from sklearn.ensemble import ExtraTreesClassifier, RandomForestClassifier, AdaBoostClassifier
 
 
 class Classifier(object):
@@ -38,9 +38,6 @@ class Classifier(object):
 		if model == "KNN":
 			return KNeighborsClassifier(n_neighbors=n_neighbors, weights=weights, metric=metric, n_jobs=-1)
 
-	#[‘cityblock’, ‘cosine’, ‘euclidean’, ‘l1’, ‘l2’, ‘manhattan’]
-	# "uniform", "distance"
-	# “euclidean”, “manhattan”, “chebyshev”, “minkowski”, “wminkowski”, “seuclidean”, “mahalanobis”
 
 	def multinomial_SVM_clf(self, model, class_weight="balanced", degree=3, shrinking=True, probability=False):
 		if model == "linearSVM":
