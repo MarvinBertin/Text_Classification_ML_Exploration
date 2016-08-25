@@ -55,7 +55,6 @@ class DimensionalityReducer(object):
 		plt.scatter(X_tsne[0], X_tsne[1], c=y, cmap=plt.cm.rainbow)
 		plt.title("t-distributed Stochastic Neighbor Embedding (t-SNE)")
 		plt.axis('tight')
-		plt.legend()
 		plt.show()
 
 	def _compute_scores(self, reducer, n_components):
