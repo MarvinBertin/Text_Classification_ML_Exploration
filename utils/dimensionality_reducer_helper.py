@@ -66,7 +66,7 @@ class DimensionalityReducer(object):
 	        scores.append(np.mean(cross_val_score(reducer, self.X)))
 	    return scores
 
-    def _run_CV(self, reducer, n_components):
+	def _run_CV(self, reducer, n_components):
 		scores = self.compute_scores(reducer, n_components)
 		component = n_components[np.argmax(scores)]
 		return scores, component
