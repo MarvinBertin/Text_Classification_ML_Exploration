@@ -11,13 +11,11 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy import linalg
 
-from sklearn.grid_search import GridSearchCV
-
-
 class DimensionalityReducer(object):
 	"""docstring for SignalDecomposer"""
-	def __init__(self, X):
+	def __init__(self, X, y):
 		self.X = X.toarray()
+		self.y = y
 
 	def _explained_variance(self, reducer):
 		if hasattr(reducer, "explained_variance_ratio_"):
@@ -34,7 +32,7 @@ class DimensionalityReducer(object):
 		elif model == "NMF":
 			reducer = NMF(n_components=n_components, alpha=alpha, l1_ratio=l1_ratio)
 		elif model == "LDA":
-			recuder = LinearDiscriminantAnalysis(n_components=n_components)
+			reducer = LinearDiscriminantAnalysis(n_components=n_components)
 		elif model == "FactorAnalysis":
 			reducer = FactorAnalysis(n_components=n_components)
 		elif model == "GaussianRandom":
@@ -44,15 +42,20 @@ class DimensionalityReducer(object):
 		elif model == "FeatureAgglomeration":
 			reducer = FeatureAgglomeration(n_clusters=n_componentss)
 
-		reduced_X = reducer.fit_transform(self.X)
+		if model == "LDA":
+			reduced_X = reducer.fit_transform(self.X, self.y)
+		else:
+			reduced_X = reducer.fit_transform(self.X)
+
 		self._explained_variance(reducer)
 		return reduced_X
 
-	def plot_TSNE_projection(self, X, y):
+	def plot_TSNE_projection(self, X):
+
 		tsne = manifold.TSNE(n_components=2, init='pca', random_state=0)
 		X_tsne = tsne.fit_transform(X).T
 		plt.figure(figsize=(10,8))
-		plt.scatter(X_tsne[0], X_tsne[1], c=y, cmap=plt.cm.rainbow)
+		plt.scatter(X_tsne[0], X_tsne[1], c=self.y, cmap=plt.cm.rainbow)
 		plt.title("t-distributed Stochastic Neighbor Embedding (t-SNE)")
 		plt.axis('tight')
 		plt.show()
